@@ -1,6 +1,10 @@
-// credits : utkarsh gupta (demoraliser)
-// use properly.
-// most of the times when updates not required, you can keep functions inside 'update' struct empty.
+// credits : utkarsh_gupta (demoraliser)
+
+// This is segment tree implementation, which gives the index too. 
+// Make sure to define default variables (identity elements) properly
+// The BASE VECTOR here also contains {value, idx} pair.
+// USE it mostly for MAX, MIN query where idx of the min/max element is required along with value/
+// sample submission : https://codeforces.com/contest/1765/submission/183219187
 
 /*
 KEYNOTES:
@@ -14,46 +18,48 @@ identity_transformation.combine(X) = X
 ALWAYS: older_update.combine(newer_update)
 ------------------------------------------
 */
-
+ 
 struct node
 {
-    int v = 0;         //1
+    pair<int,int> v = {10, 0};         //1
     // use more variables if you want more information
     // these default values should be identity_element
     node(){}
-    node(int val){ // this is the leaf
+    node(pair<int,int> val){ // this is the leaf
         v = val;       //2 
     }
     void merge(const node &l,const node &r){ // store the thing you wanna query       
-        v = l.v + r.v;  //3
+        // v = l.v + r.v;  //3
         // if we wanted the maximum, then we would do
-        // like v = max(l.v,r.v)
+        int L = l.v.first, R = r.v.first;
+        if (L <= R) v = l.v;
+        else v = r.v;        
     }
 };
-
+ 
 struct update
 {
-    int v = 0;   // 4
+    pair<int,int> v = {10, 0};   // 4
     // use more variables if you want more information
     // these default values should be identity_transformation
     update(){}
     update(int val){
-        v = val;  // 5
+        v.first = val;  // 5
     }
     // combine the current update with the other update (see keynotes)
     void combine(update &other,const int32_t &tl,const int32_t &tr){
-        v += other.v; // 6
+        v.first += other.v.first; // 6
         
         // you can be sure that the "other" is newer than current
         
     }
     // store the correct information in the node x
     void apply(node &x,const int32_t &tl,const int32_t &tr){
-        x.v += (tr - tl + 1) * v;             //7
+        x.v.first += (tr - tl + 1) * v.first;             //7
         
     }
 };
-
+ 
 // template<typename node,typename update>
 struct segtree
 {
@@ -143,4 +149,3 @@ struct segtree
         rupd(1,0,len-1,l,r,upd);
     }
 };
-
