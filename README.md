@@ -13,6 +13,10 @@
    
    // used as ordered_set<int>  S; 
    // S.insert(123);
+   // use 'less_equal<T>' to support duplicates
+   // S.ook(x) : number of elements in S strictly less than 'x'
+   // S.size() - S.ook(x) : number of elements in S >= x
+   // *S.fbo(i) : i'th element in S (0 - based indexing)
    ```
 
    
