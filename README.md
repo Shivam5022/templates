@@ -37,7 +37,7 @@ std::mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
    
 
-4. For accurate square root use : (credits : errichto)
+4. For accurate square root use : (`credits : errichto`)
 
    ```c++
    long long x = sqrtl(a) + 2;
@@ -48,7 +48,7 @@ std::mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 
 5. Grid cell (i, j) is uniquely mapped to (i + j * n) OR (j + i * m). Print the values.
 
-6. Never use endl, unless in interactive problems. Always make a habit  of using '\n' for new line.
+6. Never use `endl`, unless in interactive problems. Always make a habit  of using `'\n'` for new line.
 
 7. Rather than clearing globals before each test case, you can also do:
 
@@ -67,8 +67,13 @@ std::mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
    depth = vector<int> (n + 5);
    ```
 
-8. Can find some other templates at :
+8. `ckmax` and `ckmin` . It returns TRUE if assignment happens else FALSE.
 
-   https://github.com/the-hyp0cr1t3/CC/tree/master/%E6%9C%AB%20Snippet
+   ```c++
+   template<class T> bool ckmin(T& a, const T& b) { return a > b ? a = b, 1 : 0; }
+   template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
+   ```
+
+   
 
    
