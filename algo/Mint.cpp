@@ -1,4 +1,4 @@
-// this one is from jiangly (Z struct)
+// credits: jiangly (Z struct)
 // can be used with int = long long too
 
 const int32_t mod = 1E9 + 7;
@@ -22,151 +22,82 @@ T power(T a, long long b) {
   }
   return res;
 }
-struct Z {
+struct Mint {
   int x;
-  Z(int x = 0) : x(norm(x)) {}
-  // Z(long long x) : x(norm(x % mod)) {}   // uncomment when there is no int = ll
+  Mint(int x = 0) : x(norm(x)) {}
+  // Mint(long long x) : x(norm(x % mod)) {}   // uncomment when there is no int = ll
   int val() const {
     return x;
   }
-  Z operator-() const {
-    return Z(norm(mod - x));
+  Mint operator-() const {
+    return Mint(norm(mod - x));
   }
-  Z inv() const {
+  Mint inv() const {
     assert(x != 0);
     return power(*this, mod - 2);
   }
-  Z &operator*=(const Z &rhs) {
+  Mint &operator*=(const Mint &rhs) {
     x = (long long) x * rhs.x % mod;
     return *this;
   }
-  Z &operator+=(const Z &rhs) {
+  Mint &operator+=(const Mint &rhs) {
     x = norm(x + rhs.x);
     return *this;
   }
-  Z &operator-=(const Z &rhs) {
+  Mint &operator-=(const Mint &rhs) {
     x = norm(x - rhs.x);
     return *this;
   }
-  Z &operator/=(const Z &rhs) {
+  Mint &operator/=(const Mint &rhs) {
     return *this *= rhs.inv();
   }
-  friend Z operator*(const Z &lhs, const Z &rhs) {
-    Z res = lhs;
+  friend Mint operator*(const Mint &lhs, const Mint &rhs) {
+    Mint res = lhs;
     res *= rhs;
     return res;
   }
-  friend Z operator+(const Z &lhs, const Z &rhs) {
-    Z res = lhs;
+  friend Mint operator+(const Mint &lhs, const Mint &rhs) {
+    Mint res = lhs;
     res += rhs;
     return res;
   }
-  friend Z operator-(const Z &lhs, const Z &rhs) {
-    Z res = lhs;
+  friend Mint operator-(const Mint &lhs, const Mint &rhs) {
+    Mint res = lhs;
     res -= rhs;
     return res;
   }
-  friend Z operator/(const Z &lhs, const Z &rhs) {
-    Z res = lhs;
+  friend Mint operator/(const Mint &lhs, const Mint &rhs) {
+    Mint res = lhs;
     res /= rhs;
     return res;
   }
-  friend std::istream &operator>>(std::istream &is, Z &a) {
+  friend std::istream &operator>>(std::istream &is, Mint &a) {
     long long v;
     is >> v;
-    a = Z(v);
+    a = Mint(v);
     return is;
   }
-  friend std::ostream &operator<<(std::ostream &os, const Z &a) {
+  friend std::ostream &operator<<(std::ostream &os, const Mint &a) {
     return os << a.val();
   }
 };
 
-/////////////////////////////////////////////////////////////////////////////////
-// use 'long long' properly this time, don't define int as long long.
-// when using Mint, try explicitly using long long for all variables.
+std::vector<Mint> fact, invfact;
+void Compute_facts (int N) {
+  fact.resize(N + 5);
+  invfact.resize(N + 5);
+  fact[0] = 1;
+  for (int i = 1; i <= N; i++) {
+    fact[i] = fact[i - 1] * i;
+  }
+  invfact[N] = fact[N].inv();
+  for (int i = N; i > 0; i--) {
+    invfact[i - 1] = invfact[i] * i;
+  }
+}
 
-const int mod = 1E9 + 7;
-// const int mod = 998244353;
-class Mint {
-public:
-  long long x;
-  Mint(long long v = 0) {
-    if(v < 0) v = v % mod + mod;
-    if(v >= mod) v = v % mod;
-    x = v;
-  }
-  Mint(int v) : Mint((long long)v) {}
-  Mint pow(long long b) const {
-    if(b < 0) return inv().pow(-b);
-    Mint a = *this;
-    Mint res = 1;
-    while(b > 0) {
-      if(b & 1) res *= a;
-      a *= a;
-      b >>= 1ll;
-    }
-    return res;
-  }
-  Mint inv() const { return pow(mod - 2); }
+Mint ncr(int n, int r) {
+  Mint ans = fact[n] * invfact[n - r] * invfact[r];
+  return ans;
+}
 
-  explicit operator int() const { return x; }
-  explicit operator long long() const { return x; }
-  explicit operator bool() const { return x; }
-
-  Mint& operator+= (const Mint& other) {
-    x += other.x;
-    if(x >= mod) x -= mod;
-    return *this;
-  }
-  Mint& operator-= (const Mint& other) {
-    x -= other.x;
-    if(x < 0) x += mod;
-    return *this;
-  }
-  Mint& operator*= (const Mint& other) {
-    x *= other.x;
-    x %= mod;
-    return *this;
-  }
-  Mint& operator/= (const Mint& other) {
-    return *this *= other.inv();
-  }
-  Mint& operator++() {
-    return *this += 1;
-  }
-  Mint& operator--() {
-    return *this -= 1;
-  }
-  // https://www.cs.odu.edu/~zeil/cs333/f13/Public/faq/faq-htmlsu23.html
-  Mint operator++(int) {
-    Mint before = *this;
-    ++*this;
-    return before;
-  }
-  Mint operator--(int) {
-    Mint before = *this;
-    --*this;
-    return before;
-  }
-  Mint operator-() const {
-    return x == 0 ? 0 : mod - x;
-  }
-  friend Mint operator+ (const Mint& a, const Mint& b) {
-    return Mint(a) += b;
-    // why not just a += b?
-  }
-  friend Mint operator- (const Mint& a, const Mint& b) { return Mint(a) -= b; }
-  friend Mint operator* (const Mint& a, const Mint& b) { return Mint(a) *= b; }
-  friend Mint operator/ (const Mint& a, const Mint& b) { return Mint(a) /= b; }
-
-  friend bool operator== (const Mint& a, const Mint& b) { return a.x == b.x; }
-  friend bool operator!= (const Mint& a, const Mint& b) { return a.x != b.x; }
-  friend bool operator< (const Mint& a, const Mint& b) { return a.x < b.x; }
-  friend bool operator> (const Mint& a, const Mint& b) { return a.x > b.x; }
-  friend bool operator<= (const Mint& a, const Mint& b) { return a.x <= b.x; }
-  friend bool operator>= (const Mint& a, const Mint& b) { return a.x >= b.x; }
-
-  friend ostream& operator<<(ostream& os, const Mint& m) { return os << m.x; }
-  friend istream& operator>>(istream& is, Mint& m) { return is >> m.x; }
-};

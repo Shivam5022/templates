@@ -9,7 +9,7 @@ struct Hash {
     vector<int> pre_1, pre_2;
     int MOD1, MOD2;
 
-    Hash(string s, int _mod1 = 1e9 + 7, int _mod2 = 998244353) {
+    Hash(string s, int _mod1 = 101777101, int _mod2 = 999999929) {
         n = (int) s.size();
         std::mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
         auto dist=uniform_int_distribution<int>(1000,5000);
