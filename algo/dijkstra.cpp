@@ -1,11 +1,9 @@
-// made this as a lambda
-// read algo properly before using
 
 using pii = pair<int, int>;
 const int Ds = 1e5;
 vector<pair<int,int>> adj[Ds];  // stores node, weight
-vector<int> minDistance(Ds);    // minimum distance from SOURCE
-vector<int> path(Ds);           //stores penultimate vertex in shortest path from SOURCE
+vector<int> minDistance;    // minimum distance from SOURCE
+vector<int> path;           //stores penultimate vertex in shortest path from SOURCE
 priority_queue<pii , vector<pii> , greater<pii> > PQ;  // stores {WEIGHT , NODE} pair
  
 auto dijkstra = [&] (int source) {
@@ -30,4 +28,5 @@ auto dijkstra = [&] (int source) {
             }
         }
     }
+    // finally minDistance will contain, the min distance of each node from the source.
 };
