@@ -1,4 +1,3 @@
-// This is the DSU with minimal features, will be used in most of the problems.
 
 #define DISJOINT_SET_UNION
 struct DSU {
@@ -20,13 +19,13 @@ struct DSU {
     bool same (int x, int y) { 
       return leader(x) == leader(y); 
     }
-    void merge (int a, int b) {
+    bool merge (int a, int b) {
       a = leader(a), b = leader(b);
-      if(a == b) return;
+      if(a == b) return false;
       if(siz[b] >= siz[a]) swap(a, b);
       siz[a] += siz[b];
       parent[b] = a;
-      return;
+      return true;
     }
     int size(int x) { 
       return siz[leader(x)]; 
