@@ -1,11 +1,16 @@
 struct SGT {   //segtree implementation by geothermal
   std::vector<int> seg; 
   int SZ;
+  int combine (int a, int b) { return a + b; } // change to sum, max, min
   SGT() {};
-  int combine (int a, int b) { return max(a, b); } // change to sum, max, min
-  void build (vector<int> val) {
+  SGT (int n, int identity) {
+    SZ = (int) n;
+    seg.resize(2 * SZ + 1, identity); // put identity here
+    for(int i = SZ - 1; i > 0; --i) seg[i] = combine(seg[i << 1], seg[(i << 1) | 1]); 
+  }
+  SGT (vector<int> val) {
     SZ = (int) val.size();
-    seg.resize(2 * SZ + 1); // put identity here
+    seg.resize(2 * SZ + 1);
     for(int i = SZ; i < 2 * SZ; ++i) {
       seg[i] = val[i - SZ];
     }
