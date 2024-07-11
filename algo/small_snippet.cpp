@@ -1,4 +1,28 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <vector>
+#include <array>
+#include <deque>
+#include <list>
+#include <stack>
+#include <queue>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
+#include <bitset>
+#include <algorithm>
+#include <string>
+#include <cstring>
+#include <cmath>
+#include <cstdlib>
+#include <utility>
+#include <functional>
+#include <ctime>
+#include <cassert>
+#include <climits>
+#include <cfloat>
+
 using namespace std;
 
 #ifdef LOCAL
@@ -8,7 +32,12 @@ using namespace std;
 #define dbg(x...)
 #endif
 
-#define int long long
+#define int     long long
+#define all(x)  x.begin(), x.end()
+#define sz(x)   static_cast<int>((x).size())
+ 
+template<class T> bool ckmin(T& a, const T& b) { return a > b ? a = b, 1 : 0; }
+template<class T> bool ckmax(T& a, const T& b) { return a < b ? a = b, 1 : 0; }
 
 void solve (int tid) {
    
