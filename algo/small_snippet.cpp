@@ -22,6 +22,7 @@
 #include <cassert>
 #include <climits>
 #include <cfloat>
+#include <numeric>
 
 using namespace std;
 
