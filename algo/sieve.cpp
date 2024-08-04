@@ -39,6 +39,6 @@ auto primeFactors = [&] (int n) {    //O (sqrtN)
             n = n / i;
         }
     }
-    if (n > 2) factors.push_back(n); // if n is a prime greater than 2  
+    if (n >= 2) factors.push_back(n); // if n is a prime greater than 2  
     return factors;  
 };
