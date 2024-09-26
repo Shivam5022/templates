@@ -4,7 +4,7 @@
 struct COMB {
   std::vector<long long> fact, invfact;
   int mod;
-  void init(int N, int M) {
+  COMB (int N, int M) {
     mod = M;
     fact.assign(N + 5, 0);
     invfact.assign(N + 5, 0);
@@ -12,12 +12,12 @@ struct COMB {
     fact[0] = 1;
     int i;
     for(i = 1 ; i < N ; i++){
-      fact[i] = (1LL * i * fact[i-1]) % p;
+      fact[i] = (1LL * i * fact[i - 1]) % p;
     }
     i--;
     invfact[i] = bpow(fact[i] , p - 2);
     for(i-- ; i >= 0 ; i--){
-      invfact[i] = (1LL * invfact[i+1] * (i+1)) % p;
+      invfact[i] = (1LL * invfact[i + 1] * (i + 1)) % p;
     }
   }
   long long bpow(long long n , long long x) {
@@ -32,12 +32,12 @@ struct COMB {
   }
   int ncr(int n , int r) {   
      if (r > n || n < 0 || r < 0) return 0;
-     return fact[n] * invfact[r] % mod * invfact[n-r] % mod;
+     return fact[n] * invfact[r] % mod * invfact[n - r] % mod;
   }   
 };
 constexpr int mod = 1E9 + 7;
-COMB q;
-// q.init(N, mod); // inside main
+
+
 
 // 2. LCA + Binary Lifiting
 
@@ -85,6 +85,7 @@ struct LCA {
 
 // 3. DSU
 
+
 #define DISJOINT_SET_UNION
 struct DSU {
     std::vector<int> parent , siz;
@@ -105,26 +106,28 @@ struct DSU {
     bool same (int x, int y) { 
       return leader(x) == leader(y); 
     }
-    void merge (int a, int b) {
+    bool merge (int a, int b) {
       a = leader(a), b = leader(b);
-      if(a == b) return;
+      if(a == b) return false;
       if(siz[b] >= siz[a]) swap(a, b);
       siz[a] += siz[b];
       parent[b] = a;
-      return;
+      return true;
     }
     int size(int x) { 
       return siz[leader(x)]; 
     }
-}; 
+};
+
 
 // 4. DIjkstra
+
 
 using pii = pair<int, int>;
 const int Ds = 1e5;
 vector<pair<int,int>> adj[Ds];  // stores node, weight
-vector<int> minDistance(Ds);    // minimum distance from SOURCE
-vector<int> path(Ds);           //stores penultimate vertex in shortest path from SOURCE
+vector<int> minDistance;    // minimum distance from SOURCE
+vector<int> path;           //stores penultimate vertex in shortest path from SOURCE
 priority_queue<pii , vector<pii> , greater<pii> > PQ;  // stores {WEIGHT , NODE} pair
  
 auto dijkstra = [&] (int source) {
@@ -149,6 +152,7 @@ auto dijkstra = [&] (int source) {
             }
         }
     }
+    // finally minDistance will contain, the min distance of each node from the source.
 };
 
 // 5. PBDS
@@ -286,11 +290,16 @@ auto prefix_function = [&] (string s) {  // works in O(N)
 struct SGT {   //segtree implementation by geothermal
   std::vector<int> seg; 
   int SZ;
+  int combine (int a, int b) { return a + b; } // change to sum, max, min
   SGT() {};
-  int combine (int a, int b) { return max(a, b); } // change to sum, max, min
-  void build (vector<int> val) {
+  SGT (int n, int identity) {
+    SZ = (int) n;
+    seg.resize(2 * SZ + 1, identity); // put identity here
+    for(int i = SZ - 1; i > 0; --i) seg[i] = combine(seg[i << 1], seg[(i << 1) | 1]); 
+  }
+  SGT (vector<int> val) {
     SZ = (int) val.size();
-    seg.resize(2 * SZ + 1); // put identity here
+    seg.resize(2 * SZ + 1);
     for(int i = SZ; i < 2 * SZ; ++i) {
       seg[i] = val[i - SZ];
     }
@@ -317,6 +326,11 @@ struct SGT {   //segtree implementation by geothermal
 };
 
 // 8. Sieve Prime
+
+// use this till N around 1E7
+// O(n * log(log(n)))
+// number of primes less than N are around (N / log(N))
+// can be checked using primes.size()
 
 // use this till N around 1E7
 // O(n * log(log(n)))
@@ -359,9 +373,10 @@ auto primeFactors = [&] (int n) {    //O (sqrtN)
             n = n / i;
         }
     }
-    if (n > 2) factors.push_back(n); // if n is a prime greater than 2  
+    if (n >= 2) factors.push_back(n); // if n is a prime greater than 2  
     return factors;  
 };
+
 
 // 9. Sparse Table
 
